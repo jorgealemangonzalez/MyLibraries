@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <sstream>
+#include <cmath>
 #include "Graph.hxx"
 using namespace std;
 
@@ -17,6 +20,15 @@ public:
     int getValue(){
         return _value;
     }
+    
+    string getInfo(){
+        stringstream convert;
+        convert << _value;
+        return convert.str();
+    }
+    double weightTo(Node* n){
+        return (double)abs(n->getValue() - _value);
+    }
 private:
     int _value;
 };
@@ -27,6 +39,8 @@ int main(){
     g.addNode(n1);
     g.addNode(n2);
     g.addNode(n3);
-    g.addConnexion(*n1,*n2);
+    g.addConnexion(n1,n2);
+    g.addDoubleConnexion(n2,n3);
+    g.addDoubleConnexion(n1,n3);
     g.printConnexions();
 }

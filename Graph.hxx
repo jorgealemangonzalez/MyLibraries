@@ -1,3 +1,19 @@
+
+
+#ifndef GRAPH_HXX
+#define GRAPH_HXX
+#define NOTEXIST -1
+
+#include<vector>
+#include<map>
+#include<algorithm>
+
+template<class N>
+
+
+
+/*
+class Graph{
 /*
 Node class should define the operand ==
 Instances of Node sould be created with new Node...
@@ -14,16 +30,7 @@ nodeIndex(N* node):
 printConnexions():
     prints connexions of each node of the graph for the standard output
 */
-
-#ifndef GRAPH_HXX
-#define GRAPH_HXX
-#define NOTEXIST -1
-
-#include<vector>
-
-
-template<class N>
-class Graph{
+/*
 private:
     unsigned int _nNodes;
     std::vector<N*> _nodes ;
@@ -74,6 +81,48 @@ public:
             std::cout<<std::endl;
         }
     }
+};*/
+class Graph{
+/*
+    Compilation:
+        flags :     -O2 -std=c++0x -funroll-loops -ftree-vectorizer-verbose=1 -o
+        
+    Node should have:   an empty constructor,
+                        a method "double weightTo(Node* n)",
+                        a method "string getInfo()" that returns some identifier of the node
+*/
+private:
+    std::map<N*,std::vector< std::pair < N* , double > > > _nodes;   //maps a node into their connexions to other nodes. .first = connexion .second = cost of the connexion
+public:
+    Graph(){
+        
+    }
+    ~Graph(){
+        for(auto& element : _nodes){             //erase all nodes
+            delete element.first;
+        }
+    }
+    void addNode(N* node = new N() ){
+        _nodes[node] = (std::vector< std::pair < N* , double > >());
+    }
+    void addConnexion(N* node , N* connect){
+        double w = node->weightTo(connect);
+        _nodes[node].push_back( std::make_pair(connect,w)  );
+    }
+    void addDoubleConnexion(N* node , N* connect){
+        addConnexion(node,connect);
+        addConnexion(connect,node);
+    }
+    void printConnexions(){
+        for(auto& element : _nodes){
+            std::cout<<"Node with info: "<< element.first->getInfo() <<" connects with:";
+            for(auto& branch : element.second){
+                std::cout<<" branch value "<<branch.second<<" connect to "<<branch.first->getInfo()<<" ;";
+            }
+            std::cout<<std::endl;
+        }
+    }
 };
+
 
 #endif
